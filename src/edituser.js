@@ -9,66 +9,68 @@ function Edituser(props) {
 
   useEffect(async()=>{
     try {
-      let product =await axios.get(`https://60f1550c38ecdf0017b0fbac.mockapi.io/Product/${props.match.params.id}`);
-      console.log(product)
-      formik.setFieldValue("productName",product.data.productName) 
-      formik.setFieldValue("price",product.data.price) 
-      formik.setFieldValue("manufactureDate",product.data.manufactureDate) 
-      formik.setFieldValue("expirDate",product.data.expirDate) 
-      formik.setFieldValue("productType",product.data.productType)
+      let user =await axios.get(`https://60f1550c38ecdf0017b0fbac.mockapi.io/user/${props.match.params.id}`);
+      formik.setFieldValue("userName",user.data.userName) 
+      formik.setFieldValue("position",user.data.position) 
+      formik.setFieldValue("office",user.data.office) 
+      formik.setFieldValue("age",user.data.age) 
+      formik.setFieldValue("registernumber",user.data.registernumber)
+      formik.setFieldValue("salary",user.data.salary)
     } catch (error) {
       console.log(error);
     } 
   }, [])
 
-  const formik = useFormik({
-    
+  const formik=useFormik({
     initialValues: {
-      productName:"",
-      price: "",
-      manufactureDate: "",
-      expirDate: "",
-      productType: "",
+      userName: "",
+      position: "",
+      office: "",
+      age: "",
+      registernumber:"",
+      salary: "",
     },
     validate: (values) => {
       const errors = {};
-      if (!values.productName) {
-        errors.productName = "Required";
-      }else if(values.productName.length>25)
+      if (!values.userName) {
+        errors.userName = "Required";
+      }else if(values.userName.length>25)
       {
-        errors.productName = "Please enter Product Name with in 25 character";
+        errors.userName = "Please enter Product Name with in 25 character";
       }
-      if (!values.price) {
-        errors.price = "Required";
-      }else if(!Number(values.price)){
-        errors.price = "Please enter the price in Numbers";
+      if (!values.position) {
+        errors.position = "Required";
+      }else if(Number(values.position)){
+        errors.position = "Please enter the position in Alphabets";
       }
-      if (!values.manufactureDate) {
-        errors.manufactureDate = "Required";
+      if (!values.office) {
+        errors.office = "Required";
       }
-      if (!values.expirDate) {
-        errors.expirDate = "Required";
+      if (!values.age) {
+        errors.age = "Required";
       }
-      if (!values.productType) {
-        errors.productType = "Required";
-      }else if(Number(values.productType))
-      {
-        errors.productType = "Please enter the Product type in Alphabets";
+      if (!values.registernumber) {
+        errors.registernumber = "Required";
+      }
+      if(!values.salary){
+        errors.salary="Required"
       }
       return errors;
     },
     onSubmit:async(values)=>{
     try {
       setLoading(true);
-      await axios.put(`https://60f1550c38ecdf0017b0fbac.mockapi.io/Product/${props.match.params.id}`,
+      await axios.put(`https://60f1550c38ecdf0017b0fbac.mockapi.io/user/${props.match.params.id}`,
       {  
-      productName:values.productName,
-      price:values.price,
-      manufactureDate:values.manufactureDate,
-      expirDate:values.expirDate,
-      productType:values.productType}) 
+        userName:values.userName,
+        position:values.position,
+        office:values.office,
+        age:values.age,
+        registernumber:values.registernumber,
+        salary:values.salary
+    }) 
       setLoading(false);
-      history.push("/products")
+      history.push("/users")
     } catch (error) {
       console.log("Error");
       setLoading(false);
@@ -85,72 +87,86 @@ function Edituser(props) {
       <form onSubmit={formik.handleSubmit}>
         <div className="row">
           <div className="col-lg-6">
-            <label>Product Name</label>
+            <label>User Name</label>
             <input
               type="text"
-              name="productName"
-              value={formik.values.productName}
+              name="username"
+              value={formik.values.userName}
               onChange={formik.handleChange}
               className="form-control"
             />
-            {formik.errors.productName ? (
-              <span style={{ color: "red" }}>{formik.errors.productName}</span>
+            {formik.errors.userName ? (
+              <span style={{ color: "red" }}>{formik.errors.userName}</span>
             ) : null}
             <br />
           </div>
           <div className="col-lg-6">
-            <label>Price</label>
+            <label>Position</label>
             <input
               type="text"
-              name="price"
-              value={formik.values.price}
+              name="position"
+              value={formik.values.position}
               onChange={formik.handleChange}
               className="form-control"
             />
-            {formik.errors.price ? (
-              <span style={{ color: "red" }}>{formik.errors.price}</span>
+            {formik.errors.position ? (
+              <span style={{ color: "red" }}>{formik.errors.position}</span>
             ) : null}
             <br />
           </div>
           <div className="col-lg-6">
-            <label>Manufature Date</label>
+            <label>Office</label>
             <input
-              type="date"
-              name="manufactureDate"
-              value={formik.values.manufactureDate}
+              type="text"
+              name="office"
+              value={formik.values.office}
               onChange={formik.handleChange}
               className="form-control"
             />
-            {formik.errors.manufactureDate ? (
+            {formik.errors.office ? (
               <span style={{ color: "red" }}>Required</span>
             ) : null}
             <br />
           </div>
           <div className="col-lg-6">
-            <label>Expiry Date</label>
+            <label>Age</label>
             <input
-              type="date"
-              name="expirDate"
-              value={formik.values.expirDate}
+              type="text"
+              name="age"
+              value={formik.values.age}
               onChange={formik.handleChange}
               className="form-control"
             />
-            {formik.errors.expirDate ? (
+            {formik.errors.age ? (
               <span style={{ color: "red" }}>Required</span>
             ) : null}
             <br />
           </div>
           <div className="col-lg-6">
-            <label>Product Type</label>
+            <label>Register Number</label>
             <input
               type="text"
-              name="productType"
-              value={formik.values.productType}
+              name="registernumber"
+              value={formik.values.registernumber}
               onChange={formik.handleChange}
               className="form-control"
             />
-            {formik.errors.productType ? (
-              <span style={{ color: "red" }}>{formik.errors.productType}</span>
+            {formik.errors.registernumber ? (
+              <span style={{ color: "red" }}>{formik.errors.registernumber}</span>
+            ) : null}
+            <br />
+          </div>
+          <div className="col-lg-6">
+            <label>Salary</label>
+            <input
+              type="text"
+              name="salary"
+              value={formik.values.salary}
+              onChange={formik.handleChange}
+              className="form-control"
+            />
+            {formik.errors.salary ? (
+              <span style={{ color: "red" }}>{formik.errors.salary}</span>
             ) : null}
             <br />
           </div>
