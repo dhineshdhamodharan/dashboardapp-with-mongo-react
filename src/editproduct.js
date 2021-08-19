@@ -18,7 +18,7 @@ function Editproduct(props) {
         formik.setFieldValue("price",product.data.price) 
         formik.setFieldValue("manufactureDate",product.data.manufactureDate) 
         formik.setFieldValue("expirDate",product.data.expirDate) 
-        formik.setFieldValue("productType",product.data.productType)  
+        formik.setFieldValue("productType",product.data.productType)
       } catch (error) {
         console.log(error);
       } 

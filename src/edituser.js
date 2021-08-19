@@ -7,124 +7,165 @@ function Edituser(props) {
   const history=useHistory()
   const [isLoading,setLoading]=useState(false)
 
-    useEffect(async()=>{
-      try {
-        let userData =await axios.get(`https://60f1550c38ecdf0017b0fbac.mockapi.io/user/${props.match.params.id}`);
-        console.log(userData);
-        
-      } catch (error) {
-        console.log("error");
-      }
-    }, [])
+  useEffect(async()=>{
+    try {
+      let product =await axios.get(`https://60f1550c38ecdf0017b0fbac.mockapi.io/Product/${props.match.params.id}`);
+      console.log(product)
+      formik.setFieldValue("productName",product.data.productName) 
+      formik.setFieldValue("price",product.data.price) 
+      formik.setFieldValue("manufactureDate",product.data.manufactureDate) 
+      formik.setFieldValue("expirDate",product.data.expirDate) 
+      formik.setFieldValue("productType",product.data.productType)
+    } catch (error) {
+      console.log(error);
+    } 
+  }, [])
 
-    const formik=useFormik({
-      initialValues:{
-        userName: "",
-        position: "",
-        office: "",
-        age: "",
-        registernumber:"",
-        salary: "",
-      },
-      validate: (values) => {
-        const errors = {};
-        if (!values.userName) {
-          errors.userName = "Required";
-        }else if(values.userName.length>15)
-        {
-          errors.userName = "Please enter Product Name with in 15 character";
-        }
-        if (!values.position) {
-          errors.position = "Required";
-        }else if(Number(values.position)){
-          errors.position = "Please enter the position in Alphabets";
-        }
-        if (!values.office) {
-          errors.office = "Required";
-        }
-        if (!values.age) {
-          errors.age = "Required";
-        }
-        if (!values.registernumber) {
-          errors.registernumber = "Required";
-        }
-        if(!values.salary){
-          errors.salary="Required"
-        }
-        return errors;
-      },
-      onSubmit:async(values)=>{
-        try {
-          setLoading(true);
-          await axios.put(`https://60f1550c38ecdf0017b0fbac.mockapi.io/user/${props.match.params.id}`,{
-            userName:values.userName,
-            position:values.position,
-            office:values.office,
-            age:values.age,
-            registernumber:values.registernumber,
-            salary:values.salary
-          }) 
-          setLoading(false);
-          history.push("/users")
-        } catch (error) {
-          console.log("Error");
-          setLoading(false);
-          
-        }
+  const formik = useFormik({
+    
+    initialValues: {
+      productName:"",
+      price: "",
+      manufactureDate: "",
+      expirDate: "",
+      productType: "",
+    },
+    validate: (values) => {
+      const errors = {};
+      if (!values.productName) {
+        errors.productName = "Required";
+      }else if(values.productName.length>25)
+      {
+        errors.productName = "Please enter Product Name with in 25 character";
       }
-    });
+      if (!values.price) {
+        errors.price = "Required";
+      }else if(!Number(values.price)){
+        errors.price = "Please enter the price in Numbers";
+      }
+      if (!values.manufactureDate) {
+        errors.manufactureDate = "Required";
+      }
+      if (!values.expirDate) {
+        errors.expirDate = "Required";
+      }
+      if (!values.productType) {
+        errors.productType = "Required";
+      }else if(Number(values.productType))
+      {
+        errors.productType = "Please enter the Product type in Alphabets";
+      }
+      return errors;
+    },
+    onSubmit:async(values)=>{
+    try {
+      setLoading(true);
+      await axios.put(`https://60f1550c38ecdf0017b0fbac.mockapi.io/Product/${props.match.params.id}`,
+      {  
+      productName:values.productName,
+      price:values.price,
+      manufactureDate:values.manufactureDate,
+      expirDate:values.expirDate,
+      productType:values.productType}) 
+      setLoading(false);
+      history.push("/products")
+    } catch (error) {
+      console.log("Error");
+      setLoading(false);
+    }
+  }
+  });
 
-    return (
-        <div>
-             <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Edit user</h1>
-                    </div>
-              <div className="container">
-                  <form onSubmit={formik.handleSubmit}>
-                      <div className="row">
-                          <div className="col-lg-6">
-                            <label>Username</label>
-                          <input type="text" name="userName" value={formik.values.userName} onChange={formik.handleChange} className="form-control"/>
-                          {formik.errors.userName ? (<span style={{color:'red'}}>{formik.error.userName}</span>):null}
-                          <br/>
-                          </div>
-                          <div className="col-lg-6">
-                            <label>Position</label>
-                          <input type="text" name="position" value={formik.values.position} onChange={formik.handleChange} className="form-control"/>
-                          {formik.errors.position ? (<span style={{color:'red'}}>{formik.error.position}</span>):null}
-                          <br/>
-                          </div>
-                          <div className="col-lg-6">
-                            <label>Office</label>
-                          <input type="text" value={formik.values.office} onChange={formik.handleChange} className="form-control"/>
-                          {formik.errors.office ? (<span style={{color:'red'}}>{formik.error.office}</span>):null}
-                          <br/>
-                          </div>
-                          <div className="col-lg-6">
-                            <label>Age</label>
-                          <input type="text" value={formik.values.age} onChange={formik.handleChange} className="form-control"/>
-                          {formik.errors.age ? (<span style={{color:'red'}}>{formik.error.age}</span>):null}
-                          <br/>
-                          </div>
-                          <div className="col-lg-6">
-                            <label>Register Number</label>
-                          <input type="text" value={formik.values.registernumber} onChange={formik.handleChange} className="form-control"/>
-                          {formik.errors.registernumber ? (<span style={{color:'red'}}>{formik.error.registernumber}</span>):null}
-                          <br/>
-                          </div>
-                          <div className="col-lg-6">
-                            <label>Salary</label>
-                          <input type="text" value={formik.salary} onChange={formik.handleChange} className="form-control"/>
-                          {formik.errors.salary ? (<span style={{color:'red'}}>{formik.error.salary}</span>):null}
-                          <br/>
-                          </div>
-                          <div className="col-lg-12 mt-3">     
-                          <input type="submit" value="Update" className="btn btn-primary" disabled={isLoading}/>
-                          </div>
-                      </div>
-                  </form>
-                  </div>      
+  return (
+  <div>
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+      <h1 class="h3 mb-0 text-gray-800">Edit product</h1>
+    </div>
+    <div className="container">
+      <form onSubmit={formik.handleSubmit}>
+        <div className="row">
+          <div className="col-lg-6">
+            <label>Product Name</label>
+            <input
+              type="text"
+              name="productName"
+              value={formik.values.productName}
+              onChange={formik.handleChange}
+              className="form-control"
+            />
+            {formik.errors.productName ? (
+              <span style={{ color: "red" }}>{formik.errors.productName}</span>
+            ) : null}
+            <br />
+          </div>
+          <div className="col-lg-6">
+            <label>Price</label>
+            <input
+              type="text"
+              name="price"
+              value={formik.values.price}
+              onChange={formik.handleChange}
+              className="form-control"
+            />
+            {formik.errors.price ? (
+              <span style={{ color: "red" }}>{formik.errors.price}</span>
+            ) : null}
+            <br />
+          </div>
+          <div className="col-lg-6">
+            <label>Manufature Date</label>
+            <input
+              type="date"
+              name="manufactureDate"
+              value={formik.values.manufactureDate}
+              onChange={formik.handleChange}
+              className="form-control"
+            />
+            {formik.errors.manufactureDate ? (
+              <span style={{ color: "red" }}>Required</span>
+            ) : null}
+            <br />
+          </div>
+          <div className="col-lg-6">
+            <label>Expiry Date</label>
+            <input
+              type="date"
+              name="expirDate"
+              value={formik.values.expirDate}
+              onChange={formik.handleChange}
+              className="form-control"
+            />
+            {formik.errors.expirDate ? (
+              <span style={{ color: "red" }}>Required</span>
+            ) : null}
+            <br />
+          </div>
+          <div className="col-lg-6">
+            <label>Product Type</label>
+            <input
+              type="text"
+              name="productType"
+              value={formik.values.productType}
+              onChange={formik.handleChange}
+              className="form-control"
+            />
+            {formik.errors.productType ? (
+              <span style={{ color: "red" }}>{formik.errors.productType}</span>
+            ) : null}
+            <br />
+          </div>
+          <div className="col-lg-12 mt-3">
+            <input
+              type="submit"
+              value="Submit"
+              className="btn btn-primary"
+              disabled={isLoading}
+            />
+          </div>
         </div>
-    )
+      </form>
+    </div>
+  </div>
+);
 }
 export default Edituser
