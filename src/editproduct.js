@@ -7,30 +7,27 @@ import { useFormik } from "formik";
 
 function Editproduct(props) {
     const history=useHistory()
-    const [productName,setProductName]=useState("");
-    const [price,setPrice]=useState("");
-    const [manufactureDate,setManufactureDate]=useState("");
-    const [expirDate,setExpirDate]=useState("");
-    const [productType,setProductType]=useState("");
+   
     const [isLoading,setLoading]=useState(false)
 
     useEffect(async()=>{
       try {
         let product =await axios.get(`https://60f1550c38ecdf0017b0fbac.mockapi.io/Product/${props.match.params.id}`);
         console.log(product)
-        formik.values.productName=product.data.productName;
-        formik.values.price=product.data.price;
-        formik.values.manufactureDate=product.data.manufactureDate;
-        formik.values.expirDate=product.data.expirDate;
-        formik.values.productType=product.data.productType;   
+        formik.setFieldValue("productName",product.data.productName) 
+        formik.setFieldValue("price",product.data.price) 
+        formik.setFieldValue("manufactureDate",product.data.manufactureDate) 
+        formik.setFieldValue("expirDate",product.data.expirDate) 
+        formik.setFieldValue("productType",product.data.productType)  
       } catch (error) {
         console.log(error);
       } 
     }, [])
 
     const formik = useFormik({
+      
       initialValues: {
-        productName: "",
+        productName:"",
         price: "",
         manufactureDate: "",
         expirDate: "",
@@ -40,9 +37,9 @@ function Editproduct(props) {
         const errors = {};
         if (!values.productName) {
           errors.productName = "Required";
-        }else if(values.productName.length>20)
+        }else if(values.productName.length>25)
         {
-          errors.productName = "Please enter Product Name with in 20 character";
+          errors.productName = "Please enter Product Name with in 25 character";
         }
         if (!values.price) {
           errors.price = "Required";
@@ -64,8 +61,6 @@ function Editproduct(props) {
         return errors;
       },
       onSubmit:async(values)=>{
-        //e.preventDefault();
-       
       try {
         setLoading(true);
         await axios.put(`https://60f1550c38ecdf0017b0fbac.mockapi.io/Product/${props.match.params.id}`,

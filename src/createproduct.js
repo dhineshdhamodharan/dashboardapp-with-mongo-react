@@ -27,9 +27,9 @@ function Createproduct(props) {
       const errors = {};
       if (!values.productName) {
         errors.productName = "Required";
-      }else if(values.productName.length>20)
+      }else if(values.productName.length>25)
       {
-        errors.productName = "Please enter Product Name with in 20 character";
+        errors.productName = "Please enter Product Name with in 25 character";
       }
       if (!values.price) {
         errors.price = "Required";
@@ -51,7 +51,6 @@ function Createproduct(props) {
       return errors;
     },
     onSubmit:async(values)=>{
-      //e.preventDefault();
       try {
         setLoading(true);
         await axios.post("https://60f1550c38ecdf0017b0fbac.mockapi.io/Product", {
