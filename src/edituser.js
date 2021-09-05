@@ -93,7 +93,7 @@ function Edituser(props) {
               <label>User Name</label>
               <input
                 type="text"
-                name="username"
+                name="userName"
                 value={formik.values.userName}
                 onChange={formik.handleChange}
                 className="form-control"
