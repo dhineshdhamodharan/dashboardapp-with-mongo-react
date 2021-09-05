@@ -9,7 +9,9 @@ function Users() {
 
   useEffect(async () => {
     try {
-      let user = await axios.get("http://localhost:3000/users");
+      let user = await axios.get(
+        "https://dashboardapp-with-mongo-node.herokuapp.com/users"
+      );
       console.log(user.data);
       setUserList([...user.data]);
       setLoading(false);
@@ -23,7 +25,9 @@ function Users() {
     let confirm = window.confirm("Are you sure to delete the user?");
     if (confirm) {
       try {
-        await axios.delete(`http://localhost:3000/delete-user/${id}`);
+        await axios.delete(
+          `https://dashboardapp-with-mongo-node.herokuapp.com/delete-user/${id}`
+        );
         let rowIndex = userList.findIndex((obj) => obj.id == id);
         userList.splice(rowIndex, 1);
         setUserList([...userList]);

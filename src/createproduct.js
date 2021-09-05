@@ -51,13 +51,16 @@ function Createproduct(props) {
     onSubmit: async (values) => {
       try {
         setLoading(true);
-        await axios.post("http://localhost:3000/create-products", {
-          productName: values.productName,
-          price: values.price,
-          manufactureDate: values.manufactureDate,
-          expirDate: values.expirDate,
-          productType: values.productType,
-        });
+        await axios.post(
+          "https://dashboardapp-with-mongo-node.herokuapp.com/create-products",
+          {
+            productName: values.productName,
+            price: values.price,
+            manufactureDate: values.manufactureDate,
+            expirDate: values.expirDate,
+            productType: values.productType,
+          }
+        );
         setLoading(false);
         history.push("/products");
       } catch (error) {
