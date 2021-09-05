@@ -14,7 +14,7 @@ function Editproduct(props) {
     try {
       console.log(props);
       let product = await axios.get(
-        `http://localhost:3000/products/${props.match.params.id}`
+        `https://dashboardapp-with-mongo-node.herokuapp.com/products/${props.match.params.id}`
       );
       console.log(product);
       formik.setFieldValue("productName", product.data.productName);
@@ -64,7 +64,7 @@ function Editproduct(props) {
       try {
         setLoading(true);
         await axios.put(
-          `http://localhost:3000/update-product/${props.match.params.id}`,
+          `https://dashboardapp-with-mongo-node.herokuapp.com/update-product/${props.match.params.id}`,
           {
             productName: values.productName,
             price: values.price,

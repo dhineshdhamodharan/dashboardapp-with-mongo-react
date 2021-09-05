@@ -10,7 +10,9 @@ function Product(props) {
 
   useEffect(async () => {
     try {
-      let product = await axios.get("http://localhost:3000/products");
+      let product = await axios.get(
+        "https://dashboardapp-with-mongo-node.herokuapp.com/products"
+      );
       console.log(product.data);
       setProductList([...product.data]);
       setLoading(false);
@@ -25,7 +27,9 @@ function Product(props) {
     let confirm = window.confirm("Are you sure want to delete the product?");
     if (confirm) {
       try {
-        await axios.delete(`http://localhost:3000/delete-product/${id}`);
+        await axios.delete(
+          `https://dashboardapp-with-mongo-node.herokuapp.com/delete-product/${id}`
+        );
         let rowIndex = productList.findIndex((obj) => obj.id == id);
         productList.splice(rowIndex, 1);
         setProductList([...productList]);

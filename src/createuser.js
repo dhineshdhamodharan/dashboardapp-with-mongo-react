@@ -54,14 +54,17 @@ function Createuser(props) {
     onSubmit: async (values) => {
       try {
         setLoading(true);
-        await axios.post("http://localhost:3000/create-users", {
-          userName: values.userName,
-          position: values.position,
-          office: values.office,
-          age: values.age,
-          registernumber: values.registernumber,
-          salary: values.salary,
-        });
+        await axios.post(
+          "https://dashboardapp-with-mongo-node.herokuapp.com/create-users",
+          {
+            userName: values.userName,
+            position: values.position,
+            office: values.office,
+            age: values.age,
+            registernumber: values.registernumber,
+            salary: values.salary,
+          }
+        );
         setLoading(false);
         history.push("/Users");
       } catch (error) {

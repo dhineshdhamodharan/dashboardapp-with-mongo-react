@@ -10,7 +10,7 @@ function Edituser(props) {
   useEffect(async () => {
     try {
       let user = await axios.get(
-        `http://localhost:3000/users/${props.match.params.id}`
+        `https://dashboardapp-with-mongo-node.herokuapp.com/users/${props.match.params.id}`
       );
       formik.setFieldValue("userName", user.data.userName);
       formik.setFieldValue("position", user.data.position);
@@ -62,7 +62,7 @@ function Edituser(props) {
       try {
         setLoading(true);
         await axios.put(
-          `http://localhost:3000/update-user/${props.match.params.id}`,
+          `https://dashboardapp-with-mongo-node.herokuapp.com/update-user/${props.match.params.id}`,
           {
             userName: values.userName,
             position: values.position,
