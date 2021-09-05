@@ -1,85 +1,88 @@
-import axios from 'axios';
-import React, { useEffect } from 'react'
-import react, { useState } from 'react'
-import { useHistory } from 'react-router-dom';
+import axios from "axios";
+import React, { useEffect } from "react";
+import react, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { Formik } from "formik";
 import { useFormik } from "formik";
 
 function Editproduct(props) {
-    const history=useHistory()
-   
-    const [isLoading,setLoading]=useState(false)
+  const history = useHistory();
 
-    useEffect(async()=>{
-      try {
-        let product =await axios.get(`https://60f1550c38ecdf0017b0fbac.mockapi.io/Product/${props.match.params.id}`);
-        console.log(product)
-        formik.setFieldValue("productName",product.data.productName) 
-        formik.setFieldValue("price",product.data.price) 
-        formik.setFieldValue("manufactureDate",product.data.manufactureDate) 
-        formik.setFieldValue("expirDate",product.data.expirDate) 
-        formik.setFieldValue("productType",product.data.productType)
-      } catch (error) {
-        console.log(error);
-      } 
-    }, [])
+  const [isLoading, setLoading] = useState(false);
 
-    const formik = useFormik({
-      
-      initialValues: {
-        productName:"",
-        price: "",
-        manufactureDate: "",
-        expirDate: "",
-        productType: "",
-      },
-      validate: (values) => {
-        const errors = {};
-        if (!values.productName) {
-          errors.productName = "Required";
-        }else if(values.productName.length>25)
-        {
-          errors.productName = "Please enter Product Name with in 25 character";
-        }
-        if (!values.price) {
-          errors.price = "Required";
-        }else if(!Number(values.price)){
-          errors.price = "Please enter the price in Numbers";
-        }
-        if (!values.manufactureDate) {
-          errors.manufactureDate = "Required";
-        }
-        if (!values.expirDate) {
-          errors.expirDate = "Required";
-        }
-        if (!values.productType) {
-          errors.productType = "Required";
-        }else if(Number(values.productType))
-        {
-          errors.productType = "Please enter the Product type in Alphabets";
-        }
-        return errors;
-      },
-      onSubmit:async(values)=>{
+  useEffect(async () => {
+    try {
+      console.log(props);
+      let product = await axios.get(
+        `http://localhost:3000/products/${props.match.params.id}`
+      );
+      console.log(product);
+      formik.setFieldValue("productName", product.data.productName);
+      formik.setFieldValue("price", product.data.price);
+      formik.setFieldValue("manufactureDate", product.data.manufactureDate);
+      formik.setFieldValue("expirDate", product.data.expirDate);
+      formik.setFieldValue("productType", product.data.productType);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  const formik = useFormik({
+    initialValues: {
+      productName: "",
+      price: "",
+      manufactureDate: "",
+      expirDate: "",
+      productType: "",
+    },
+    validate: (values) => {
+      const errors = {};
+      if (!values.productName) {
+        errors.productName = "Required";
+      } else if (values.productName.length > 25) {
+        errors.productName = "Please enter Product Name with in 25 character";
+      }
+      if (!values.price) {
+        errors.price = "Required";
+      } else if (!Number(values.price)) {
+        errors.price = "Please enter the price in Numbers";
+      }
+      if (!values.manufactureDate) {
+        errors.manufactureDate = "Required";
+      }
+      if (!values.expirDate) {
+        errors.expirDate = "Required";
+      }
+      if (!values.productType) {
+        errors.productType = "Required";
+      } else if (Number(values.productType)) {
+        errors.productType = "Please enter the Product type in Alphabets";
+      }
+      return errors;
+    },
+    onSubmit: async (values) => {
       try {
         setLoading(true);
-        await axios.put(`https://60f1550c38ecdf0017b0fbac.mockapi.io/Product/${props.match.params.id}`,
-        {  
-        productName:values.productName,
-        price:values.price,
-        manufactureDate:values.manufactureDate,
-        expirDate:values.expirDate,
-        productType:values.productType}) 
+        await axios.put(
+          `http://localhost:3000/update-product/${props.match.params.id}`,
+          {
+            productName: values.productName,
+            price: values.price,
+            manufactureDate: values.manufactureDate,
+            expirDate: values.expirDate,
+            productType: values.productType,
+          }
+        );
         setLoading(false);
-        history.push("/products")
+        history.push("/products");
       } catch (error) {
         console.log("Error");
         setLoading(false);
       }
-    }
-    });
+    },
+  });
 
-    return (
+  return (
     <div>
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Edit product</h1>
@@ -97,7 +100,9 @@ function Editproduct(props) {
                 className="form-control"
               />
               {formik.errors.productName ? (
-                <span style={{ color: "red" }}>{formik.errors.productName}</span>
+                <span style={{ color: "red" }}>
+                  {formik.errors.productName}
+                </span>
               ) : null}
               <br />
             </div>
@@ -153,7 +158,9 @@ function Editproduct(props) {
                 className="form-control"
               />
               {formik.errors.productType ? (
-                <span style={{ color: "red" }}>{formik.errors.productType}</span>
+                <span style={{ color: "red" }}>
+                  {formik.errors.productType}
+                </span>
               ) : null}
               <br />
             </div>
@@ -171,4 +178,4 @@ function Editproduct(props) {
     </div>
   );
 }
-export default Editproduct
+export default Editproduct;
